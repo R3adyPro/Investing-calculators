@@ -1,16 +1,15 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+.korkoa {
+  text-align: center;
+}
+
+body {
+  background-color: rgb(50, 49, 49);
 }
 
 .App-header {
@@ -24,15 +23,16 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.formValues {
+  width: 100%;
+  z-index: 1;
+  margin: auto;
+  position: relative;
+
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.interestSlider {
+  display: 'flex';
+  position: relative;
+  padding: 20%;
 }
