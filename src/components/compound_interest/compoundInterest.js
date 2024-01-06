@@ -1,9 +1,11 @@
 import { useState } from "react"
 import { Slider, Box, TextField, Button, Typography } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles';
+import { EnergySavingsLeaf } from "@mui/icons-material";
 
 const Widget = styled('div')(({ theme }) => ({
     padding: 20,
+    paddingBottom: 0,
     borderRadius: 10,
     width: 343,
     maxWidth: '100%',
@@ -19,8 +21,11 @@ export default function CompoundInterest() {
     const [newValue, setNewValue] = useState(8)
     const [newFormValues, setNewFormValues] = useState({amount: '', year: ''})
     const [submitted, setSubmitted] = useState(false)
-    let value = 0
+    const [totalSum, setTotalSum] = useState(0)
 
+    function isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+    }
 
     const handleSliderChange = (_, value) => {
         setNewValue(value);
@@ -32,10 +37,18 @@ export default function CompoundInterest() {
                 ...pre,
                 [name]: value
         }))
+        setSubmitted(false)
     }
 
     const handleSubmit = (event) => {
         event.preventDefault()
+        let { amount, year } = newFormValues
+        const divident = newValue / 100 + 1 
+        
+        for (let i=0; i<year; i++){
+            amount = amount * divident
+        }
+        setTotalSum(parseInt(amount))
         setSubmitted(true)
     }
 
@@ -43,16 +56,16 @@ export default function CompoundInterest() {
         event.target.select()
     }
 
-    return(
-        <Box sx={{width: '100%'}}>
+    return (
+        <Box sx={{ width: '100%' }}>
             <Widget>
                 <form onSubmit={handleSubmit}>
-                    <Box sx={{width: '100%'}}>
-                        <Box component='form' sx={{width: '100%'}}>
+                    <Box sx={{ width: '100%' }}>
+                        <Box component='div' sx={{width: '100%'}}>
                             <TextField 
                                 className="formValues" 
                                 id="investment"
-                                label='Summa'
+                                label='Alkusijoitus'
                                 name="amount"
                                 variant='standard' 
                                 value={newFormValues.amount}
@@ -62,11 +75,12 @@ export default function CompoundInterest() {
                             <TextField
                                 className="formValues"
                                 id="years"
-                                label='Vuosi'
+                                label='Sijousaika (vuotta)'
                                 variant="standard"
                                 name="year"
                                 value={newFormValues.year}
                                 onChange={handleChange}
+                                onFocus={handleFocus}
                             />
                         </Box>
                         <Box sx={{paddingTop:1.5, paddingBottom: 1.5}}>
@@ -86,13 +100,13 @@ export default function CompoundInterest() {
                             <Button variant='contained' size='large' type="submit">Laske</Button>
                         </Box>
                         <Box>
-                            <Typography variant='h2'>
-                                {submitted ? value : value}
+                            <Typography variant='h4' sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 2}}>
+                                {submitted ? `${totalSum.toLocaleString()}€` : `${totalSum.toLocaleString()}€`}
                             </Typography>
                         </Box>
                     </Box>
                 </form>
             </Widget>
         </Box>
-    )
+    );
 }
